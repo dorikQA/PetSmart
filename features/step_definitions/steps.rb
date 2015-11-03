@@ -1,10 +1,12 @@
 
-Then(/^Check that menu item "([^"]*)" contains submenus$/) do |arg|
+
+Then /^Check that menu item "([^"]*)" contains submenus$/ do |x|
 
   $driver.get "http://www.petsmart.com/"
-  element = $driver.find_element :xpath => "//span[@class='ws-category-title' and text() = '#{arg}']"
+  sleep 5
+  element = $driver.find_element :xpath => "//span[@class='ws-category-title' and text() = '#{x}']"
   element.click
-  sleep 6
+  sleep 10
   listofsubmenu =$driver.find_elements :xpath => "//li[@class='ws-category-list-item ws-category-list-item-1 ws-category-list-item-odd pet-leftnav-family-item pet-leftnav-level1-item']"
   if listofsubmenu.empty?
   then puts "fgfgfgfgffg"
@@ -13,16 +15,20 @@ Then(/^Check that menu item "([^"]*)" contains submenus$/) do |arg|
   end
 end
 
-Then(/^Check footer menu "([^"]*)" with items$/) do |foot|
+#$x("//div[contains(@class, 'pet-footer-links-group')][position() >1]")
+#puts "Footer items are fine"
+
+Then /^Check footer menu "([^"]*)" with items$/ do |y|
 
   $driver.get "http://www.petsmart.com/"
-  listofootsubmenu =$driver.find_elements :xpath => "//div[contains(@class, 'pet-footer-links-group')][position() >1][.//h3[contains(text(), '#{foot}')]]//li/a"
+  listofootsubmenu =$driver.find_elements :xpath => "//div[contains(@class, 'pet-footer-links-group')][position() >1][.//h3[contains(text(), '#{y}')]]//li/a"
   if listofootsubmenu.empty?
   then puts "try again"
   else puts listofootsubmenu.map  {|n| n.attribute("innerHTML")}
-
   end
 end
+
+
 Then /^Click on "([^"]*)" icon$/ do |icon|
   $driver.get "http://www.petsmart.com/"
   sleep 5
@@ -51,13 +57,14 @@ Then /^Print out all upcoming events in wrapper$/ do
   else puts listofevents.map  {|n| n.attribute("innerHTML")}
   end
 end
+
 Then /^In dog menu go to food$/ do
   $driver.get "http://www.petsmart.com/"
-  sleep 3
-  element =  $driver.find_element :xpath => "//li[@class='ws-common-list-item pet-main-nav-item-level1']//a/span[@class ='ws-category-title' and text()= 'Dog')]"
-  sleep 8
+  sleep 10
+  element =  $driver.find_element :xpath => "//ul[@class = 'ws-common-list pet-main-nav']/li/a/span[@class = 'ws-category-title' and text()= 'Dog']"
+  sleep 10
   $driver.mouse.move_to element
-  element = $driver.find_element :xpath => "//li[@class='ws-common-list-item pet-main-nav-item-level1'][.//a/span[contains(text(),'Dog')]]//span[@class = 'ws-category-title' and text() = 'Food']"
-  sleep 8
+  element = $driver.find_element :xpath => "//li[contains(@class, 'ws-common-list-item pet-main-nav-item-level1')][1]//span[@class = 'ws-category-title' and text()='Food']"
+  sleep 10
   element.click
 end
