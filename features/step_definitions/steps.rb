@@ -1,4 +1,4 @@
-#?????? ?? ????????,,,
+
 Then(/^Check that menu item "([^"]*)" contains submenus$/) do |arg|
 
   $driver.get "http://www.petsmart.com/"
@@ -12,9 +12,6 @@ Then(/^Check that menu item "([^"]*)" contains submenus$/) do |arg|
 
   end
 end
-
-#$x("//div[contains(@class, 'pet-footer-links-group')][position() >1]")
-#puts "Footer items are fine"
 
 Then(/^Check footer menu "([^"]*)" with items$/) do |foot|
 
@@ -57,15 +54,10 @@ end
 Then /^In dog menu go to food$/ do
   $driver.get "http://www.petsmart.com/"
   sleep 3
-  element =  $driver.find_element :xpath => "//li[@class='ws-common-list-item pet-main-nav-item-level1']//a/span[contains(text(),'Dog')]"
+  element =  $driver.find_element :xpath => "//li[@class='ws-common-list-item pet-main-nav-item-level1']//a/span[@class ='ws-category-title' and text()= 'Dog')]"
   sleep 8
   $driver.mouse.move_to element
-  element = $driver.find_element :xpath => "//span[@class = 'ws-category-title' and text() = 'Food']"
+  element = $driver.find_element :xpath => "//li[@class='ws-common-list-item pet-main-nav-item-level1'][.//a/span[contains(text(),'Dog')]]//span[@class = 'ws-category-title' and text() = 'Food']"
   sleep 8
   element.click
 end
-
-lalalalal
-
-
-#  element = $driver.find_element :xpath => "//li[@class='ws-common-list-item pet-main-nav-item-level1'][.//a/span[contains(text(),'Dog')]]//span[@class = 'ws-category-title' and text() = 'Food']"
