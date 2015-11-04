@@ -47,6 +47,11 @@ Feature: Test plan sample
 
   Scenario: Main page functionality - upcoming events wrapper
     Then Print out all upcoming events in wrapper
+    
+    Scenario: Dog - Food - sorting - price low to high
+    #Then In dog menu go to food
+    Then Set sorting to "Low to high"
+    #Then Verify correct sorting
 
 #  Scenario: Main page functionality - search - valid search
 #    Then In search type "smth valid"
@@ -81,10 +86,7 @@ Feature: Test plan sample
 #    Then Set sorting to "price high to low"
 #    Then Verify correct sorting
 #
-  Scenario: Dog - Food - sorting - price low to high
-    Then In dog menu go to food
-    #Then Set sorting to "price low to high"
-    #Then Verify correct sorting
+  
 
 #  Scenario: Dog - Food - sorting - top rated
 #    Then In "Dog" menu go to "Food"
