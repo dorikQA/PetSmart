@@ -68,3 +68,12 @@ Then /^In dog menu go to food$/ do
   sleep 10
   element.click
 end
+
+Then /^Set sorting to "Low to high"$/ do
+  $driver.get "http://www.petsmart.com/dog/food/cat-36-catid-100004"
+  dropd = $driver.find_element(:xpath, "//select[@name = 'SortingAttribute']")
+  variable = $dropdown.new(dropd)
+  variable.select_by(:value, 'ProductSalePrice-asc')
+  sleep 5
+
+end
