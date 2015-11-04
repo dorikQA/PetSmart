@@ -5,3 +5,4 @@ require 'cucumber'
 $driver = Selenium::WebDriver.for :firefox
 #$driver.get $basicurl
 $driver.manage.window.maximize
+$dropdown = Selenium::WebDriver::Support::Select
