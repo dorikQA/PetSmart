@@ -69,6 +69,63 @@ end
 #   element.click
 # end
 
+# Then /^Collect all prices from all pages$/ do
+#   $driver.get "http://www.petsmart.com/dog/food/cat-36-catid-100004"
+#   sleep 5
+#   price =  $driver.find_elements :xpath =>"//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value') and normalize-space(text())]"
+#   next_page = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
+#   sleep 5
+#   array = []
+#   while next_page.count > 0
+#     #puts price.map  {|n| n.attribute("innerHTML")}
+#     for j in price
+#       a = j.text
+#       array.push(a)
+#     end
+#     next_page[0].click
+#     sleep 7
+#     price =  $driver.find_elements :xpath =>"//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value') and normalize-space(text())]"
+#     next_page = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
+#   end
+#   for j in price
+#     b = j.text
+#     array.push(b)
+#   end
+#   puts "All prices"
+#   puts array
+#
+#   array2 = []
+#   for i in array do
+#     y = i.gsub!('$', '')
+#     array2.push(i)
+#   end
+#   array3 = []
+#   for i in array2 do
+#     if i.include?('to')
+#       a =  i.split('to')[0].to_f
+#       array3.push(a)
+#     else
+#       b = i.to_f
+#       array3.push(b)
+#     end
+#
+#   end
+#   puts "All prices modified"
+#   puts array3
+#   for i in array3 do
+#     if i < i+1
+#       puts "All good"
+#     else
+#
+#
+#     end
+#   end
+# end
+#
+
+
+
+
 Then /^Set sorting to "Low to high"$/ do
   $driver.get "http://www.petsmart.com/dog/food/cat-36-catid-100004"
   dropd = $driver.find_element(:xpath, "//select[@name = 'SortingAttribute']")
@@ -77,90 +134,108 @@ Then /^Set sorting to "Low to high"$/ do
   sleep 5
 
 end
+
+
 Then /^Verify correct sorting$/ do
+  $driver.get "http://www.petsmart.com/dog/food/cat-36-catid-100004"
+  sleep 8
   price =  $driver.find_elements :xpath =>"//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value') and normalize-space(text())]"
   next_page = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
-  sleep 5
-  array = []
+  sleep 7
+  arrayPrices = []
+
   while next_page.count > 0
-    #puts price.map  {|n| n.attribute("innerHTML")}
     for j in price
-      a = j.text
-      array.push(a)
+      arrayPrices.push(j.text)
     end
     next_page[0].click
     sleep 7
     price =  $driver.find_elements :xpath =>"//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value') and normalize-space(text())]"
     next_page = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
+
   end
   for j in price
-    b = j.text
-    array.push(b)
-  end
-  puts "All prices"
-  puts array
+    sleep 3
+    arrayPrices.push(j.text)
 
-  array2 = []
-  for i in array do
-    y = i.gsub!('$', '')
-    array2.push(i)
   end
-  array3 = []
-  for i in array2 do
+  puts "All prices from 46 pages"
+  puts arrayPrices
+
+  arrayPricesSignRemove = []
+  for i in arrayPrices do
+    arrayPricesSignRemove.push(i.gsub!('$', ''))
+  end
+  arrayPricesModified = []
+  for i in arrayPricesSignRemove do
     if i.include?('to')
-      a =  i.split('to')[0].to_f
-      array3.push(a)
+      arrayPricesModified.push(i.split('to')[0].to_f)
     else
-      b = i.to_f
-      array3.push(b)
+      arrayPricesModified.push(i.to_f)
     end
 
   end
-  puts "All prices modified"
-  puts array3
-  for i in array3 do
-    if i < i+1
-      puts "All good"
-    else
+  puts "Prices from all pages modified:"
+  puts arrayPricesModified
 
+ dropd = $driver.find_element(:xpath, "//select[@name = 'SortingAttribute']")
+  variable = $dropdown.new(dropd)
+  variable.select_by(:value, 'ProductSalePrice-asc')
+sleep 15
+pricesoted =  $driver.find_elements :xpath =>"//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value') and normalize-space(text())]"
+next_page = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
+sleep 7
+arraypricessorted = []
 
-    end
+while next_page.count > 0
+  for j in pricesoted
+    arraypricessorted.push(j.text)
   end
-
+  next_page[0].click
+  sleep 7
+  pricesoted  =  $driver.find_elements :xpath =>"//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value') and normalize-space(text())]"
+  next_page = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
 
 end
+for j in pricesoted
+  sleep 3
+  arraypricessorted.push(j.text)
 
-Then /^New prices$/ do
-  price =  $driver.find_elements :xpath =>"//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value')and normalize-space(text())]"
-  puts price.map  {|n| n.attribute("innerHTML")}
-  array = []
-  for i in price do
-     a = i.text
-     b = a.gsub!('$', '')
-     array.push(b)
+end
+puts "All sorted prices from 46 pages"
+puts arraypricessorted
+
+arraypricesSortedSignRemove = []
+for i in arraypricessorted do
+  arraypricesSortedSignRemove.push(i.gsub!('$', ''))
+end
+arrayPricesSortedModified = []
+for i in arraypricesSortedSignRemove do
+  if i.include?('to')
+    arrayPricesSortedModified.push(i.split('to')[0].to_f)
+  else
+    arrayPricesSortedModified.push(i.to_f)
   end
-  puts array
-  array2 = []
-  for i in array do
-      if i.include?('to')
-        a =  i.split('to')[0].to_f
-        array2.push(a)
-      else
-        b = i.to_f
-        array2.push(b)
-      end
 
-   end
-  puts array2
-  for i in array2 do
-    if i <= i+1
-      puts "Sorting is wrongt"
-    else
-      puts "Sorting is correct"
-    end
-
+end
+puts "Prices from all pages modified:"
+puts arrayPricesSortedModified
+  x = arrayPricesModified.sort
+  puts "Sorted for testing"
+  puts x
+  if x ==  arrayPricesSortedModified
+    puts 'Prices sorted correct'
+  else raise "BUG!!! Sorting by Price Low to High is not correct!!!"
   end
 end
+
+
+
+
+
+
+
+
 
 # Then /^Set sorting to Price Low to High and verify correct sorting$/ do
 #   item_prices = $driver.find_elements(:xpath, "//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value')]")
@@ -230,57 +305,4 @@ end
 #   else raise "BUG!!! Sorting by Price Low to High is not correct!!!"
 #   end
 # end
-
-Then /^Verify correct sorting$/ do
-  price =  $driver.find_elements :xpath =>"//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value') and substring(normalize-space(text()), 2)]"
-  next_page = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
-  sleep 5
-  array1= []
-  while next_page.count > 0
-    puts price.map  {|n| n.attribute("innerHTML")}
-    for j in price
-      b = j.text
-      array1.push(b)
-    end
-    next_page[0].click
-    sleep 7
-    price =  $driver.find_elements :xpath =>"//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value') and substring(normalize-space(text()), 2)]"
-    next_page = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
-  end
-  for j in price
-     b = j.text
-     array1.push(b)
-  end
-  puts "All prices"
-  puts array1
-  array_modifyed = []
-  for textarray1 in array1
-    x = textarray1[3..6].to_f
-    array_modifyed.push(x)
-  end
-
-  puts 'Modifyed array:'
-  puts array_modifyed
-
-
-end
-
-
-
-
-  # if next_page.count == 0
-  #   pricelast =  $driver.find_elements :xpath =>"//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value')]"
-  #   puts pricelast.map  {|n| n.attribute("innerHTML")}
-  #   for j in pricelast
-  #     b = j.text
-  #     c = b[3..6].to_f
-  #     array_1_modified.push(c)
-  #   end
-
-   #end
-
-
-  # prices =  $driver.find_elements :xpath => "//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value')and number(substring(normalize-space(text()), 2))]"
-  # puts prices.map  {|n| n.attribute("innerHTML")}
-
 
