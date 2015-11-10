@@ -79,7 +79,7 @@ Then /^Set sorting to "Low to high"$/ do
 end
 
 
-Then /^Verify correct sorting$/ do
+Then /^Set sorting to "Low to high" and verify correct sorting$/ do
   $driver.get "http://www.petsmart.com/dog/food/cat-36-catid-100004"
   sleep 8
   price =  $driver.find_elements :xpath =>"//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value') and normalize-space(text())]"
