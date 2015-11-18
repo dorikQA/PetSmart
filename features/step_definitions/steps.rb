@@ -1,4 +1,12 @@
+Then /^Login to gmail$/ do
+  login = 't.d.markit@gmail.com'
+  password = 'Poipoipoi1'
+  gmail = Gmail.connect(login, password)
+  # puts gmail.loged_in?
+   gmail.inbox.count(:unread)
+  # gmail.logout
 
+end
 
 Then /^Check that menu item "([^"]*)" contains submenus$/ do |x|
 
@@ -136,14 +144,13 @@ Then /^Set sorting to "Low to high"$/ do
 end
 
 
-Then /^Verify correct sorting$/ do
+Then /^Set sorting to "Low to high" and verify correct sorting$/ do
   $driver.get "http://www.petsmart.com/dog/food/cat-36-catid-100004"
   sleep 8
   price =  $driver.find_elements :xpath =>"//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value') and normalize-space(text())]"
   next_page = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
   sleep 7
   arrayPrices = []
-
   while next_page.count > 0
     for j in price
       arrayPrices.push(j.text)
@@ -152,16 +159,13 @@ Then /^Verify correct sorting$/ do
     sleep 7
     price =  $driver.find_elements :xpath =>"//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value') and normalize-space(text())]"
     next_page = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
-
   end
   for j in price
     sleep 3
     arrayPrices.push(j.text)
-
   end
   puts "All prices from 46 pages"
   puts arrayPrices
-
   arrayPricesSignRemove = []
   for i in arrayPrices do
     arrayPricesSignRemove.push(i.gsub!('$', ''))
@@ -173,53 +177,46 @@ Then /^Verify correct sorting$/ do
     else
       arrayPricesModified.push(i.to_f)
     end
-
   end
   puts "Prices from all pages modified:"
   puts arrayPricesModified
-
- dropd = $driver.find_element(:xpath, "//select[@name = 'SortingAttribute']")
+  dropd = $driver.find_element(:xpath, "//select[@name = 'SortingAttribute']")
   variable = $dropdown.new(dropd)
   variable.select_by(:value, 'ProductSalePrice-asc')
-sleep 15
-pricesoted =  $driver.find_elements :xpath =>"//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value') and normalize-space(text())]"
-next_page = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
-sleep 7
-arraypricessorted = []
-
-while next_page.count > 0
+  sleep 15
+  pricesoted =  $driver.find_elements :xpath =>"//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value') and normalize-space(text())]"
+  next_page = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
+  sleep 7
+  arraypricessorted = []
+  while next_page.count > 0
+    for j in pricesoted
+      arraypricessorted.push(j.text)
+    end
+    next_page[0].click
+    sleep 7
+    pricesoted  =  $driver.find_elements :xpath =>"//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value') and normalize-space(text())]"
+    next_page = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
+  end
   for j in pricesoted
+    sleep 3
     arraypricessorted.push(j.text)
   end
-  next_page[0].click
-  sleep 7
-  pricesoted  =  $driver.find_elements :xpath =>"//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value') and normalize-space(text())]"
-  next_page = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
-
-end
-for j in pricesoted
-  sleep 3
-  arraypricessorted.push(j.text)
-
-end
-puts "All sorted prices from 46 pages"
-puts arraypricessorted
-
-arraypricesSortedSignRemove = []
-for i in arraypricessorted do
-  arraypricesSortedSignRemove.push(i.gsub!('$', ''))
-end
-arrayPricesSortedModified = []
-for i in arraypricesSortedSignRemove do
-  if i.include?('to')
-    arrayPricesSortedModified.push(i.split('to')[0].to_f)
-  else
-    arrayPricesSortedModified.push(i.to_f)
+  puts "All sorted prices from 46 pages"
+  puts arraypricessorted
+  arraypricesSortedSignRemove = []
+  for i in arraypricessorted do
+    arraypricesSortedSignRemove.push(i.gsub!('$', ''))
   end
-
-end
-puts "Prices from all pages modified:"
-puts arrayPricesSortedModified
+  arrayPricesSortedModified = []
+  for i in arraypricesSortedSignRemove do
+    if i.include?('to')
+      arrayPricesSortedModified.push(i.split('to')[0].to_f)
+    else
+      arrayPricesSortedModified.push(i.to_f)
+    end
+  end
+  puts "Prices from all pages modified:"
+  puts arrayPricesSortedModified
   x = arrayPricesModified.sort
   puts "Sorted for testing"
   puts x
@@ -229,80 +226,80 @@ puts arrayPricesSortedModified
   end
 end
 
+Then /^In search type ([^"]*)$/ do |x|
+  $driver.get "http://www.petsmart.com/"
+  sleep 3
+  element = $driver.find_element(:id, "searchForm")
+  element.send_keys x
+  sleep 3
+  searchbutton  = $driver.find_element(:xpath, "//button[@class = 'ws-search-submit']")
+  searchbutton.click
+  sleep 3
+end
+
+Then /^Check that some results returned ([^"]*)$/ do |y|
+  items = $driver.find_elements(:xpath, "//h4[@class = 'ws-product-title fn']")
+
+for i in items
+  if i.text.include? y
+    puts "Item contain text:" + y + "Item:" + i.text
+  else raise "BUG!!!"
+  end
+end
+end
+
+Then /^Check that no results "([^"]*)" returned and message "([^"]*)"$/ do |word, message|
+  item = $driver.find_element(:xpath, "//div[@class = 'ws-group pet-heading-group pet-search-title pet-dym-title-top']//h1[@class = 'ws-heading']")
+   if item.text.include? message
+      puts "No reults for: " + word + " Displayed message is: " + message
+   else raise "BUG!!! Check searched word"
+   end
+  end
 
 
-
-
-
-
-
-
-# Then /^Set sorting to Price Low to High and verify correct sorting$/ do
-#   item_prices = $driver.find_elements(:xpath, "//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value')]")
-#   next_page = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
-#   array_1 = []
-#   while next_page.count > 0
-#     for i in item_prices
-#       a = i.text
-#       array_1.push(a)
-#     end
-#     next_page[0].click
-#     sleep 5
-#     item_prices = $driver.find_elements(:xpath, "//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value')]")
-#     next_page = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
+ #Then /^in Pet service click on each item and verify that all promo messages are different$/ do
+#   elements = $driver.find_elements(:xpath, "//li[contains(@class, 'pet-services__nav-item')]/a")
+#   array_of_messages = []
+#   message = $driver.find_elements(:xpath, "//div[@class = 'pet-services__slide-text']/h3[contains(@style, 'color: #fff')]")
+#   n = 0
+#   for i in elements
+#     i.click
+#     a = message[n].text.to_s
+#     sleep 3
+#     array_of_messages.push(a)
+#     n=n+1
 #   end
-#   for i in item_prices
-#     a = i.text
-#     array_1.push(a)
-#   end
-#   puts "Array of prices - unsorted:"
-#   puts array_1
-#   array_1_modified = []
-#   for j in array_1
-#     b = j.gsub!('$ ', '')
-#     c = b[0..4].to_f
-#     array_1_modified.push(c)
-#   end
-#   puts "Array of prices - unsorted - modified:"
-#   puts array_1_modified
-#   ddown = $driver.find_element(:xpath, "//select[@name = 'SortingAttribute']")
-#   sel_from_ddown = Selenium::WebDriver::Support::Select.new(ddown)
-#   sel_from_ddown.select_by(:value,"ProductSalePrice-asc")
-#   sleep 15
-#   item_prices_sorted = $driver.find_elements(:xpath, "//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value')]")
-#   next_page_1 = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
-#   array_2 = []
-#   while next_page_1.count > 0
-#     for k in item_prices_sorted
-#       d = k.text
-#       array_2.push(d)
-#     end
-#     next_page_1[0].click
-#     sleep 5
-#     item_prices_sorted = $driver.find_elements(:xpath, "//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value')]")
-#     next_page_1 = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
-#   end
-#   for k in item_prices_sorted
-#     d = k.text
-#     array_2.push(d)
-#   end
-#   puts "Array of prices - after sorting:"
-#   puts array_2
-#   array_2_modified = []
-#   for n in array_2
-#     l = n.gsub!('$ ', '')
-#     m = l[0..4].to_f
-#     array_2_modified.push(m)
-#   end
-#   x = array_1_modified.sort
-#   puts "Array of prices - after sorting - modified:"
-#   puts array_2_modified
-#   puts "Array sorted for verification purpose:"
-#   puts x
-#   sleep 3
-#   if array_2_modified == x
-#     puts "Items sorted correctly by Price Low to High."
-#   else raise "BUG!!! Sorting by Price Low to High is not correct!!!"
+#   puts "Array of messages: "
+#   puts array_of_messages
+#   array_of_uniq_elements = array_of_messages.uniq
+#   puts "Array of unique elements: "
+#   puts array_of_uniq_elements
+#   if array_of_messages == array_of_uniq_elements
+#     puts "All promo messages are different."
+#   else raise "BUG!!! Duplicate messages!!!"
 #   end
 # end
 
+Then /^in Pet service click on each item and verify that all promo messages are different$/ do
+  $driver.get "http://www.petsmart.com/"
+  sleep 5
+  servicemenu = $driver.find_elements(:xpath, "//ul[@class = 'pet-services__nav']//a")
+  message = $driver.find_elements(:xpath, "//h3[@style = 'color: #fff;']")
+  sleep 4
+  messages = []
+  n = 0
+  for i in servicemenu do
+    i.click
+    y = message[n].text.to_s
+    sleep 3
+    messages.push(y)
+    n = n+1
+  end
+  puts "Array of messages:"
+  puts messages
+   messages2 = messages.uniq
+    if messages == messages2
+      puts "All messages are different"
+    else raise "BUG!!"
+    end
+end

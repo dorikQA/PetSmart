@@ -1,7 +1,5 @@
 Feature: Test plan sample
 
-#  base url: "http://www.petsmart.com/"
-
   Scenario: Main page functionality - header navigation
 
     Then Check that menu item "Dog" contains submenus
@@ -50,20 +48,19 @@ Feature: Test plan sample
     
     Scenario: Dog - Food - sorting - price low to high
     #Then In dog menu go to food
-    #Then Set sorting to "Low to high"
-    Then Verify correct sorting
+    Then Set sorting to "Low to high" and verify correct sorting
 
-    #  Scenario: Main page functionality - search - valid search
-#    Then In search type "smth valid"
-#    Then Check that some results returned
-#
-#  Scenario: Main page functionality - search - invalid search
-#    Then In search type "smth invalid"
-#    Then Check that no results returned (or some message)
-#
-#  Scenario: Main page functionality - pet services wrapper
-#    Then in Pet service click on each item and verify that all promo messages are different
-#
+  Scenario: Main page functionality - search - valid search
+    Then In search type Food
+    Then Check that some results returned Food
+
+  Scenario: Main page functionality - search - invalid search
+    Then In search type Tanya
+    Then Check that no results "Tanya" returned and message "0 Results for:"
+
+  Scenario: Main page functionality - pet services wrapper
+    Then in Pet service click on each item and verify that all promo messages are different
+
 #  Scenario: Dog - Food and health - Brands
 #    Then In "Dog" menu go to "Food & health"
 #    Then In "Featured Brands" check that each brand navigates to the page with brand specific items
@@ -85,8 +82,6 @@ Feature: Test plan sample
 #    Then In "Dog" menu go to "Food"
 #    Then Set sorting to "price high to low"
 #    Then Verify correct sorting
-#
-  
 
 #  Scenario: Dog - Food - sorting - top rated
 #    Then In "Dog" menu go to "Food"
