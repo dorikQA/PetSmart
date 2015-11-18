@@ -172,6 +172,39 @@ puts arrayPricesSortedModified
   end
 end
 
+#Scenario: Dog - Food and health - Brands
+
+Then /^In "Dog" menu go to "Food & health"$/ do
+  $driver.get("http://www.petsmart.com/small-pet/food-care/cat-36-catid-100001")
+  sleep 2
+end
+
+
+Then /^In "Featured Brands" check that each brand navigates to the page with brand specific items$/ do
+  list_of_brands = $driver.find_elements(:xpath, "//div[contains(@class, 'layout__content-width-column--fith gutter')]//img[@alt]")
+  sleep 3
+  n = 1
+  for i in list_of_brands do
+    brand = $driver.find_element(:xpath, "(//div[contains(@class, 'layout__content-width-column--fith gutter')]//img[@alt])["+n.to_s+"]")
+    m = brand.attribute('alt')
+    l = m.upcase.split()[0]
+    puts "Icon name is  " + l
+    brand.click
+    sleep 5
+    items = $driver.find_elements(:xpath, "//h4[@class = 'ws-product-title fn']")
+    for b in items do
+      if b.text.upcase.include? m or b.text.upcase.include? l
+        puts "Page contains specific brand  " + m + "." + "  Item is:  " + b.text
+      else raise "Item doesn't have brand  " + m + "Item name is    ." + b.text
+      end
+    end
+    sleep 5
+    $driver.navigate.back
+    sleep 8
+    n = n+1
+  end
+  sleep 5
+end
 
 
 
