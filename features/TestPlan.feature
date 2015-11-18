@@ -63,9 +63,9 @@ Feature: Test plan sample
 #  Scenario: Main page functionality - pet services wrapper
 #    Then in Pet service click on each item and verify that all promo messages are different
 #
-#  Scenario: Dog - Food and health - Brands
-#    Then In "Dog" menu go to "Food & health"
-#    Then In "Featured Brands" check that each brand navigates to the page with brand specific items
+  Scenario: Dog - Food and health - Brands
+    Then In "Dog" menu go to "Food & health"
+    Then In "Featured Brands" check that each brand navigates to the page with brand specific items
 #
 #  Scenario: Dog - Food and health - top categories
 #    Then In "Dog" menu go to "Food & health"
