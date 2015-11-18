@@ -77,63 +77,6 @@ end
 #   element.click
 # end
 
-# Then /^Collect all prices from all pages$/ do
-#   $driver.get "http://www.petsmart.com/dog/food/cat-36-catid-100004"
-#   sleep 5
-#   price =  $driver.find_elements :xpath =>"//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value') and normalize-space(text())]"
-#   next_page = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
-#   sleep 5
-#   array = []
-#   while next_page.count > 0
-#     #puts price.map  {|n| n.attribute("innerHTML")}
-#     for j in price
-#       a = j.text
-#       array.push(a)
-#     end
-#     next_page[0].click
-#     sleep 7
-#     price =  $driver.find_elements :xpath =>"//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value') and normalize-space(text())]"
-#     next_page = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
-#   end
-#   for j in price
-#     b = j.text
-#     array.push(b)
-#   end
-#   puts "All prices"
-#   puts array
-#
-#   array2 = []
-#   for i in array do
-#     y = i.gsub!('$', '')
-#     array2.push(i)
-#   end
-#   array3 = []
-#   for i in array2 do
-#     if i.include?('to')
-#       a =  i.split('to')[0].to_f
-#       array3.push(a)
-#     else
-#       b = i.to_f
-#       array3.push(b)
-#     end
-#
-#   end
-#   puts "All prices modified"
-#   puts array3
-#   for i in array3 do
-#     if i < i+1
-#       puts "All good"
-#     else
-#
-#
-#     end
-#   end
-# end
-#
-
-
-
-
 Then /^Set sorting to "Low to high"$/ do
   $driver.get "http://www.petsmart.com/dog/food/cat-36-catid-100004"
   dropd = $driver.find_element(:xpath, "//select[@name = 'SortingAttribute']")
@@ -303,3 +246,89 @@ Then /^in Pet service click on each item and verify that all promo messages are 
     else raise "BUG!!"
     end
 end
+
+# Then /^New prices$/ do
+#   price =  $driver.find_elements :xpath =>"//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value')and normalize-space(text())]"
+#   puts price.map  {|n| n.attribute("innerHTML")}
+#   array = []
+#   for i in price do
+#      a = i.text
+#      b = a.gsub!('$', '')
+#      array.push(b)
+#   end
+#   puts array
+#   array2 = []
+#   for i in array do
+#       if i.include?('to')
+#         a =  i.split('to')[0].to_f
+#         array2.push(a)
+#       else
+#         b = i.to_f
+#         array2.push(b)
+#       end
+# 
+#    end
+#   puts array2
+#   for i in array2 do
+#     if i <= i+1
+#       puts "Sorting is wrongt"
+#     else
+#       puts "Sorting is correct"
+#     end
+# 
+#   end
+# end
+
+
+# Then /^Collect all prices from all pages$/ do
+#   $driver.get "http://www.petsmart.com/dog/food/cat-36-catid-100004"
+#   sleep 5
+#   price =  $driver.find_elements :xpath =>"//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value') and normalize-space(text())]"
+#   next_page = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
+#   sleep 5
+#   array = []
+#   while next_page.count > 0
+#     #puts price.map  {|n| n.attribute("innerHTML")}
+#     for j in price
+#       a = j.text
+#       array.push(a)
+#     end
+#     next_page[0].click
+#     sleep 7
+#     price =  $driver.find_elements :xpath =>"//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value') and normalize-space(text())]"
+#     next_page = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
+#   end
+#   for j in price
+#     b = j.text
+#     array.push(b)
+#   end
+#   puts "All prices"
+#   puts array
+#
+#   array2 = []
+#   for i in array do
+#     y = i.gsub!('$', '')
+#     array2.push(i)
+#   end
+#   array3 = []
+#   for i in array2 do
+#     if i.include?('to')
+#       a =  i.split('to')[0].to_f
+#       array3.push(a)
+#     else
+#       b = i.to_f
+#       array3.push(b)
+#     end
+#
+#   end
+#   puts "All prices modified"
+#   puts array3
+#   for i in array3 do
+#     if i < i+1
+#       puts "All good"
+#     else
+#     end
+#   end
+# end
+#
+

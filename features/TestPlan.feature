@@ -48,6 +48,7 @@ Feature: Test plan sample
     
     Scenario: Dog - Food - sorting - price low to high
     #Then In dog menu go to food
+
     Then Set sorting to "Low to high" and verify correct sorting
 
   Scenario: Main page functionality - search - valid search
