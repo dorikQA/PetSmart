@@ -207,6 +207,21 @@ Then /^In "Featured Brands" check that each brand navigates to the page with bra
 end
 
 
+Then /^Add 2 random items into compare mode$/ do
+  items = $driver.find_elements(:xpath, "//div[contains(@class, 'ws-group pet-family-content pet-content')]//input[@class = 'ws-compare-link-checkbox' and @type = 'checkbox']")
+  for i in 0..3 do
+    items.sample.click
+    sleep 2
+  end
+  checkeditems = []
+  items2 = $driver.find_elements(:xpath, "//div[contains(@class, 'ws-group pet-family-content pet-content')]//input[@class = 'ws-compare-link-checkbox' and @type = 'checkbox']")
+  for i in items2 do
+    if i.selected?
+      checkeditems.push(i)
+    end
+  end
+  puts "All fine" + checkeditems.length +  "were checked"
+end
 
 # Then /^New prices$/ do
 #   price =  $driver.find_elements :xpath =>"//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value')and normalize-space(text())]"
