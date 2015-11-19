@@ -1,12 +1,6 @@
-Then /^Login to gmail$/ do
-  login = 't.d.markit@gmail.com'
-  password = 'Poipoipoi1'
-  gmail = Gmail.connect(login, password)
-  # puts gmail.loged_in?
-   gmail.inbox.count(:unread)
-  # gmail.logout
 
-end
+
+#Scenario1: Main page functionality - header navigation
 
 Then /^Check that menu item "([^"]*)" contains submenus$/ do |x|
 
@@ -23,8 +17,7 @@ Then /^Check that menu item "([^"]*)" contains submenus$/ do |x|
   end
 end
 
-#$x("//div[contains(@class, 'pet-footer-links-group')][position() >1]")
-#puts "Footer items are fine"
+#Scenario2: Main page functionality - footer navigation
 
 Then /^Check footer menu "([^"]*)" with items$/ do |y|
 
@@ -36,7 +29,7 @@ Then /^Check footer menu "([^"]*)" with items$/ do |y|
   end
 end
 
-
+# Scenario3-8: Main page functionality - external links - facebook/Hangouts/Twitter/Instagram/Pinterest/Youtube
 Then /^Click on "([^"]*)" icon$/ do |icon|
   $driver.get "http://www.petsmart.com/"
   sleep 5
@@ -44,13 +37,12 @@ Then /^Click on "([^"]*)" icon$/ do |icon|
   element.click
   sleep 8
 end
-
 Then /^Verify navigation to "([^"]*)"$/ do |site|
   $driver.switch_to.window $driver.window_handles.last
   assert $driver.title == "#{site}"
 end
 
-
+#Scenario9: Main page functionality - upcoming events wrapper
 
 Then /^Verify user navigate to "([^"]*)"$/ do |site2|
   $driver.switch_to.window $driver.window_handles.last
@@ -66,27 +58,25 @@ Then /^Print out all upcoming events in wrapper$/ do
   end
 end
 
-#Then /^In dog menu go to food$/ do
-#   $driver.get "http://www.petsmart.com/"
-#   sleep 5
-#   element =  $driver.find_element :xpath => "//ul[@class = 'ws-common-list pet-main-nav']/li/a/span[@class = 'ws-category-title' and text()= 'Dog']"
-#   sleep 10
-#   $driver.mouse.move_to element
-#   element = $driver.find_element :xpath => "//li[contains(@class, 'ws-common-list-item pet-main-nav-item-level1')][1]//span[@class = 'ws-category-title' and text()='Food']"
-#   sleep 10
-#   element.click
-# end
+#Scenario10: Dog - Food - sorting - price low to high
 
-Then /^Set sorting to "Low to high"$/ do
-  $driver.get "http://www.petsmart.com/dog/food/cat-36-catid-100004"
-  dropd = $driver.find_element(:xpath, "//select[@name = 'SortingAttribute']")
-  variable = $dropdown.new(dropd)
-  variable.select_by(:value, 'ProductSalePrice-asc')
+Then /^In dog menu go to food$/ do
+  $driver.get "http://www.petsmart.com/"
   sleep 5
-
+  element =  $driver.find_element :xpath => "//ul[@class = 'ws-common-list pet-main-nav']/li/a/span[@class = 'ws-category-title' and text()= 'Dog']"
+  sleep 10
+  $driver.mouse.move_to element
+  element = $driver.find_element :xpath => "//li[contains(@class, 'ws-common-list-item pet-main-nav-item-level1')][1]//span[@class = 'ws-category-title' and text()='Food']"
+  sleep 10
+  element.click
 end
-
-
+# Then /^Set sorting to "Low to high"$/ do
+#   #$driver.get "http://www.petsmart.com/dog/food/cat-36-catid-100004"
+#   dropd = $driver.find_element(:xpath, "//select[@name = 'SortingAttribute']")
+#   variable = $dropdown.new(dropd)
+#   variable.select_by(:value, 'ProductSalePrice-asc')
+#   sleep 5
+#   end
 Then /^Set sorting to "Low to high" and verify correct sorting$/ do
   $driver.get "http://www.petsmart.com/dog/food/cat-36-catid-100004"
   sleep 8
@@ -169,6 +159,8 @@ Then /^Set sorting to "Low to high" and verify correct sorting$/ do
   end
 end
 
+#Scenario11: Main page functionality - search - valid search
+
 Then /^In search type ([^"]*)$/ do |x|
   $driver.get "http://www.petsmart.com/"
   sleep 3
@@ -191,6 +183,8 @@ for i in items
 end
 end
 
+#Scenario12: Main page functionality - search - invalid search
+
 Then /^Check that no results "([^"]*)" returned and message "([^"]*)"$/ do |word, message|
   item = $driver.find_element(:xpath, "//div[@class = 'ws-group pet-heading-group pet-search-title pet-dym-title-top']//h1[@class = 'ws-heading']")
    if item.text.include? message
@@ -199,30 +193,7 @@ Then /^Check that no results "([^"]*)" returned and message "([^"]*)"$/ do |word
    end
   end
 
-
- #Then /^in Pet service click on each item and verify that all promo messages are different$/ do
-#   elements = $driver.find_elements(:xpath, "//li[contains(@class, 'pet-services__nav-item')]/a")
-#   array_of_messages = []
-#   message = $driver.find_elements(:xpath, "//div[@class = 'pet-services__slide-text']/h3[contains(@style, 'color: #fff')]")
-#   n = 0
-#   for i in elements
-#     i.click
-#     a = message[n].text.to_s
-#     sleep 3
-#     array_of_messages.push(a)
-#     n=n+1
-#   end
-#   puts "Array of messages: "
-#   puts array_of_messages
-#   array_of_uniq_elements = array_of_messages.uniq
-#   puts "Array of unique elements: "
-#   puts array_of_uniq_elements
-#   if array_of_messages == array_of_uniq_elements
-#     puts "All promo messages are different."
-#   else raise "BUG!!! Duplicate messages!!!"
-#   end
-# end
-
+#Scenario13: Main page functionality - pet services wrapper
 Then /^in Pet service click on each item and verify that all promo messages are different$/ do
   $driver.get "http://www.petsmart.com/"
   sleep 5
@@ -243,10 +214,58 @@ Then /^in Pet service click on each item and verify that all promo messages are 
    messages2 = messages.uniq
     if messages == messages2
       puts "All messages are different"
-    else raise "BUG!!"
+    else raise "BUG!!! You have duplicates"
     end
 end
 
+#Scenario14: Dog - Food and health - Brands
+Then /^In "Dog" menu go to "Food & health"$/ do
+  $driver.get("http://www.petsmart.com/small-pet/food-care/cat-36-catid-100001")
+  sleep 2
+end
+Then /^In "Featured Brands" check that each brand navigates to the page with brand specific items$/ do
+  list_of_brands = $driver.find_elements(:xpath, "//div[contains(@class, 'layout__content-width-column--fith gutter')]//img[@alt]")
+  sleep 3
+  n = 1
+  for i in list_of_brands do
+    brand = $driver.find_element(:xpath, "(//div[contains(@class, 'layout__content-width-column--fith gutter')]//img[@alt])["+n.to_s+"]")
+    m = brand.attribute('alt')
+    puts "Icon name is  " + m
+    brand.click
+    sleep 5
+    items = $driver.find_elements(:xpath, "//h4[@class = 'ws-product-title fn']")
+    for b in items do
+      if b.text.include? "'"
+        b = b.text.gsub!("'", "").upcase
+      elsif b.text.upcase.include? "GREAT"
+        b = b.text.upcase.gsub!("GREAT", "GRREAT").upcase
+      else
+        b = b.text.upcase
+      end
+      if b.include? m.upcase.split()[0] or b.include? m
+        puts "Page contains specific brand  " + m + "." + "  Item is:  " + b
+      else raise "Item doesn't have brand  " + m + "Item name is    ." + b
+      end
+    end
+    sleep 5
+    $driver.navigate.back
+    sleep 8
+    n = n+1
+  end
+  sleep 5
+end
+
+
+
+# Then /^Login to gmail$/ do
+#   login = 't.d.markit@gmail.com'
+#   password = 'Poipoipoi1'
+#   gmail = Gmail.connect(login, password)
+#   # puts gmail.loged_in?
+#    gmail.inbox.count(:unread)
+#   # gmail.logout
+#
+# end
 # Then /^New prices$/ do
 #   price =  $driver.find_elements :xpath =>"//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value')and normalize-space(text())]"
 #   puts price.map  {|n| n.attribute("innerHTML")}
