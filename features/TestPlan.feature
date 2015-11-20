@@ -134,18 +134,18 @@ Feature: Test plan sample
 #    Then Set filter for "Health Consideration"
 #    Then Verify correct sorting
 #
-#  Scenario: Dog - Food - comparing - adding 2 items
-#    Then In "Dog" menu go to "Food"
-#    Then Add 2 random items into compare mode
-#
-#  Scenario: Dog - Food - comparing - adding 3 items
-#    Then In "Dog" menu go to "Food"
-#    Then Add 3 random items into compare mode
-#
-#  Scenario: Dog - Food - comparing - adding more then 3 items
-#    Then In "Dog" menu go to "Food"
-#    Then Add 4 random items into compare mode
-#
+  Scenario: Dog - Food - comparing - adding 2 items
+    Then In "Dog" menu go to "Food"
+    Then Add 2 random items into compare mode
+
+  Scenario: Dog - Food - comparing - adding 3 items
+    Then In "Dog" menu go to "Food"
+    Then Add 3 random items into compare mode
+
+  Scenario: Dog - Food - comparing - adding more then 3 items
+    Then In "Dog" menu go to "Food"
+    Then Add 4 random items into compare mode
+
 #  Scenario: Dog - Food - comparing - removing 1-3 items
 #    Then In "Dog" menu go to "Food"
 #    Then Add 3 random items into compare mode

@@ -254,7 +254,47 @@ Then /^In "Featured Brands" check that each brand navigates to the page with bra
   end
   sleep 5
 end
-
+#Scenario15 Dog - Food - comparing - adding 2 items
+Then /^In "Dog" menu go to "Food"$/ do
+  $driver.get("http://www.petsmart.com/dog/food/cat-36-catid-100004")
+  sleep 5
+end
+Then /^Add 2 random items into compare mode$/ do
+  items = $driver.find_elements(:xpath, "//div[contains(@class, 'ws-group pet-family-content pet-content')]//input[@class = 'ws-compare-link-checkbox' and @type = 'checkbox']")
+  for i in 0..1 do
+    items.sample.click
+    sleep 2
+  end
+  checkeditems = []
+  items2 = $driver.find_elements(:xpath, "//div[contains(@class, 'ws-group pet-family-content pet-content')]//input[@class = 'ws-compare-link-checkbox' and @type = 'checkbox']")
+  for i in items2 do
+    if i.selected?
+      checkeditems.push(i)
+    end
+  end
+  puts "All fine " + checkeditems.length.to_s +  " items were added to comparison"
+end
+#Scenario16: Dog - Food - comparing - adding 3 items
+Then /^Add 3 random items into compare mode$/ do
+  items = $driver.find_elements(:xpath, "//div[contains(@class, 'ws-group pet-family-content pet-content')]//input[@class = 'ws-compare-link-checkbox' and @type = 'checkbox']")
+  for i in 0..2 do
+    items.sample.click
+    sleep 2
+  end
+end
+#Scenario17: Dog - Food - comparing - adding more then 3 items
+Then /^Add 4 random items into compare mode$/ do
+  items = $driver.find_elements(:xpath, "//div[contains(@class, 'ws-group pet-family-content pet-content')]//input[@class = 'ws-compare-link-checkbox' and @type = 'checkbox']")
+  for i in 0..3 do
+    items.sample.click
+    sleep 2
+  end
+  message  = $driver.find_elements(:xpath, "//div[@class = 'kor-overlay-content']/div")
+  if alert.count > 0
+    puts "Error message: " + message.text
+  else raise "Something wrong. Message is not displayed"
+  end
+end
 
 
 # Then /^Login to gmail$/ do
