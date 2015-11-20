@@ -154,7 +154,7 @@ Then /^Set sorting to "Low to high" and verify correct sorting$/ do
   puts "Sorted for testing"
   puts x
   if x ==  arrayPricesSortedModified
-    puts 'Prices sorted correct'
+    puts 'Prices sorted from Low to High correct'
   else raise "BUG!!! Sorting by Price Low to High is not correct!!!"
   end
 end
@@ -290,11 +290,241 @@ Then /^Add 4 random items into compare mode$/ do
     sleep 2
   end
   message  = $driver.find_elements(:xpath, "//div[@class = 'kor-overlay-content']/div")
-  if alert.count > 0
+  if message.count > 0
     puts "Error message: " + message.text
   else raise "Something wrong. Message is not displayed"
   end
 end
+
+#Scenario18: Dog - Food - see 200 items verification
+Then /^Click "View 200 Items"$/ do
+  itemsbutton = $driver.find_element(:xpath, "(//a[contains(@class,'ws-product-listing-view-all-items')])[1]").click
+  sleep 5
+end
+Then /^Check that 200 items displayed$/ do
+   items = $driver.find_elements(:xpath, "//h4[@class = 'ws-product-title fn']")
+   if items.length == 200
+     puts "Page is displayed 200 items"
+   else raise "Bug.Something wrong"
+   end
+end
+
+
+#  Scenario19: Dog - Food - pagination verification
+
+  Then /^Go through all pages and print out all given items$/ do
+
+    items = $driver.find_elements(:xpath, "//h4[@class = 'ws-product-title fn']")
+    puts items.map  {|n| n.attribute("innerHTML")}
+    next_page = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
+  sleep 5
+  array = []
+  while next_page.count > 0
+    #puts price.map  {|n| n.attribute("innerHTML")}
+    next_page[0].click
+    items = $driver.find_elements(:xpath, "//h4[@class = 'ws-product-title fn']")
+    puts items.map  {|n| n.attribute("innerHTML")}
+    sleep 7
+    next_page = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
+  end
+    puts "All fine"
+
+  end
+
+#  Scenario20: Dog - Food - sorting - price high to low
+Then /^Set sorting to "High to low" and verify correct sorting$/ do
+# $driver.get "http://www.petsmart.com/dog/food/cat-36-catid-100004"
+sleep 8
+price =  $driver.find_elements :xpath =>"//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value') and normalize-space(text())]"
+next_page = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
+sleep 7
+arrayPrices = []
+while next_page.count > 0
+  for j in price
+    arrayPrices.push(j.text)
+  end
+  next_page[0].click
+  sleep 7
+  price =  $driver.find_elements :xpath =>"//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value') and normalize-space(text())]"
+  next_page = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
+end
+for j in price
+  sleep 3
+  arrayPrices.push(j.text)
+end
+puts "All prices from 46 pages"
+puts arrayPrices
+arrayPricesSignRemove = []
+for i in arrayPrices do
+  arrayPricesSignRemove.push(i.gsub!('$', ''))
+end
+arrayPricesModified = []
+for i in arrayPricesSignRemove do
+  if i.include?('to')
+    arrayPricesModified.push(i.split('to')[0].to_f)
+  else
+    arrayPricesModified.push(i.to_f)
+  end
+end
+puts "Prices from all pages modified:"
+puts arrayPricesModified
+dropd = $driver.find_element(:xpath, "//select[@name = 'SortingAttribute']")
+variable = $dropdown.new(dropd)
+variable.select_by(:value, 'ProductSalePrice-desc')
+sleep 15
+ pricesoted =  $driver.find_elements :xpath =>"//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value') and normalize-space(text())]"
+ next_page = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
+ sleep 7
+ arraypricessorted = []
+ while next_page.count > 0
+   for j in pricesoted
+     arraypricessorted.push(j.text)
+   end
+   next_page[0].click
+   sleep 7
+   pricesoted  =  $driver.find_elements :xpath =>"//div[@class = 'ws-group pet-prodloop']//span[contains(@class, 'kor-product-sale-price-value') and normalize-space(text())]"
+   next_page = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
+ end
+ for j in pricesoted
+   sleep 3
+   arraypricessorted.push(j.text)
+ end
+ puts "All sorted prices from 46 pages"
+ puts arraypricessorted
+ arraypricesSortedSignRemove = []
+ for i in arraypricessorted do
+   arraypricesSortedSignRemove.push(i.gsub!('$', ''))
+ end
+ arrayPricesSortedModified = []
+ for i in arraypricesSortedSignRemove do
+   if i.include?('to')
+     arrayPricesSortedModified.push(i.split('to')[0].to_f)
+   else
+     arrayPricesSortedModified.push(i.to_f)
+   end
+ end
+ puts "Prices from all pages modified:"
+ puts arrayPricesSortedModified
+ x = arrayPricesModified.sort.revert
+ puts "Sorted for testing"
+ puts x
+ if x ==  arrayPricesSortedModified
+   puts 'Prices sorted  High to Low correct'
+ else raise "BUG!!! Sorting by Price Low to High is not correct!!!"
+ end
+end
+Then /^Rates$/ do
+  rates =  $driver.find_elements(:xpath, "//div[@class = 'ws-group pet-prodloop-rating-group ws-stars']//span")
+  newarray = []
+  for i in rates do
+    newarray.push(i.text.to_f)
+  end
+  puts newarray
+
+  end
+#  Scenario21: Dog - Food - sorting - top rated
+
+    Then /^Set sorting to "top rated" and verify correct  sorting$/ do
+      rates =  $driver.find_elements(:xpath, "//div[@class = 'ws-group pet-prodloop-rating-group ws-stars']//span")
+      next_page = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
+      sleep 7
+      arrayRates = []
+      while next_page.count > 0
+        for j in rates
+          arrayRates.push(j.text.to_f)
+        end
+        next_page[0].click
+        sleep 7
+        rates =  $driver.find_elements(:xpath, "//div[@class = 'ws-group pet-prodloop-rating-group ws-stars']//span")
+        next_page = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
+      end
+      for j in rates
+        sleep 3
+        arrayRates.push(j.text.to_f)
+      end
+      puts arrayRates
+      dropd = $driver.find_element(:xpath, "//select[@name = 'SortingAttribute']")
+      variable = $dropdown.new(dropd)
+      variable.select_by(:value, 'AverageRating-desc')
+      sleep 15
+      ratesoted =  $driver.find_elements(:xpath, "//div[@class = 'ws-group pet-prodloop-rating-group ws-stars']//span")
+      next_page = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
+      sleep 7
+      arrayRatesSorted = []
+      while next_page.count > 0
+        for j in ratesoted
+          arrayRatesSorted.push(j.text.to_f)
+        end
+        next_page[0].click
+        sleep 7
+        ratesoted =  $driver.find_elements(:xpath, "//div[@class = 'ws-group pet-prodloop-rating-group ws-stars']//span")
+        next_page = $driver.find_elements(:xpath, "//a[@class = 'ws-product-listing-pagination-link' and text() = 'to next page']")
+      end
+      for j in ratesoted
+        sleep 3
+        arrayRatesSorted.push(j.text.to_f)
+      end
+      puts arrayRatesSorted
+      if arrayRatesSorted == arrayRates.sort.reverse
+        puts 'Items sorted by Top rated'
+      else raise "BUG!!! Sorting by Top rated is not correct!!!"
+      end
+    end
+# Scenario22: Dog - Food - comparing - removing 1-3 items-verify that differnt type removing works correctly(uncheck box, tap remove button, from comparison bar)
+
+     Then /^From compare mode remove 1st item  and verify that item was removed$/ do
+       items = $driver.find_elements(:xpath, "//ul[@class = 'ws-product-list pet-compare-list']//a[contains(@class,'ws-compare-link-remove')]")
+       items[1].click
+       itemsAfterRemoving = $driver.find_elements(:xpath, "//div[contains(@class, 'ws-group pet-family-content pet-content')]//input[@class = 'ws-compare-link-checkbox' and @type = 'checkbox']")
+       selecteditems = []
+       for i in itemsAfterRemoving do
+         if i.selected?
+         selecteditems.push(i)
+         end
+       end
+       if selecteditems.length == 2
+       puts "3d items was removed. You have 2 more"
+       else raise "Bug. Probably item was not removed"
+       end
+
+     end
+     Then  /^Tap Remove button to remove 2nd item ,  verify that item was removed$/ do
+       items = $driver.find_elements(:xpath, "//div[@class = 'ws-compare-link-add-container active-compare']//a[contains(@class,'ws-compare-link-remove')]")
+       items[0].click
+       itemsAfterRemoving = $driver.find_elements(:xpath, "//div[contains(@class, 'ws-group pet-family-content pet-content')]//input[@class = 'ws-compare-link-checkbox' and @type = 'checkbox']")
+       selecteditems = []
+       for i in itemsAfterRemoving do
+         if i.selected?
+           selecteditems.push(i)
+         end
+       end
+       if selecteditems.length == 1
+         puts "2nd Item was removed. You have 1 more"
+       else raise "Bug. Probably item was not removed"
+       end
+     end
+    Then /^Uncheck box  to remove 3d item  and verify that item was removed$/ do
+      items = $driver.find_elements(:xpath, "//div[contains(@class, 'ws-group pet-family-content pet-content')]//input[@class = 'ws-compare-link-checkbox' and @type = 'checkbox']")
+      for i in items do
+        if i.selected?
+          i.click
+        end
+      end
+      items2 = $driver.find_elements(:xpath, "//div[contains(@class, 'ws-group pet-family-content pet-content')]//input[@class = 'ws-compare-link-checkbox' and @type = 'checkbox']")
+      selecteditems = []
+      for j in items2 do
+        if j.selected?
+        selecteditems.push(j)
+        else "Unselect doesn't work"
+        end
+      end
+      if selecteditems.length == 0
+        puts  "All items were succesfully removed"
+        else raise "Bug. Probably item was not removed"
+
+      end
+    end
+
 
 
 # Then /^Login to gmail$/ do
