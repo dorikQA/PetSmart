@@ -154,24 +154,39 @@ Feature: Test plan sample
     Then From compare mode remove 1st item  and verify that item was removed
     Then Tap Remove button to remove 2nd item ,  verify that item was removed
     Then Uncheck box  to remove 3d item  and verify that item was removed
-############################################
-#    Then Add 3 random items into compare mode
-#    Then Remove one item from compare mode
-#    Then Remove one item from compare mode
-#    Then Remove one item from compare mode
-############################################
+
 #33
-#  Scenario: Dog - Shopping - 1 item to cart - all fine
-#34
-#  Scenario: Dog - Shopping - 1 item to cart - size, quantity and flavor not selected
-#35
-#  Scenario: Dog - Shopping - 1 item to cart with removing
-#36
-#  Scenario: Dog - Shopping - 1 item to cart with proceeding
-#37
-#  Scenario: Dog - Shopping - more then 1 item to cart with removing of 1 item
-#
-#
+  Scenario: Dog - Shopping - 1 item to cart - all fine
+    Then In "Dog" menu go to "Food"
+    Then Add random item to card
+    Then Choose size, flavor and quantity and add to cart
+    Then Verify that 1 item in cart
+
+##34
+##  Scenario: Dog - Shopping - 1 item to cart - size, quantity and flavor not selected
+#    Then In "Dog" menu go to "Food"
+#    Then Add random item to card
+#    Then Add to cart if size, quantity and flavor not selected
+#    Then Verify that error messages notify user to select options
+##35
+##  Scenario: Dog - Shopping - 1 item to cart with removing
+#    Then In "Dog" menu go to "Food"
+#    Then Add random item to card
+#    Then Choose size, flavor and quantity and add to cart
+#    Then Remove item from cart and verify that no items in cart
+##36
+##  Scenario: Dog - Shopping - 1 item to cart with proceeding
+#    Then In "Dog" menu go to "Food"
+#    Then Add random item to card
+#    Then Choose size, flavor and quantity and add to cart
+#    Then Tap Checkout button and verify thet user on Checkout page
+##37
+##  Scenario: Dog - Shopping - more then 1 item to cart with removing of 1 item
+##   Then In "Dog" menu go to "Food"
+#    Then Add random  5 items to card
+#    Then Choose size, flavor and quantity and add to cart
+#    Then Remove  1 item from cart and verify that 4 items in cart
+##
 #
 #
 #

@@ -521,11 +521,46 @@ Then /^Rates$/ do
       if selecteditems.length == 0
         puts  "All items were succesfully removed"
         else raise "Bug. Probably item was not removed"
-
       end
     end
+# Scenario23: Dog - Shopping - 1 item to cart - all fine
+   Then /^Add random item to card$/ do
+     items = $driver.find_elements(:xpath, "//h4[@class = 'ws-product-title fn']")
+     sleep 3
+     items.sample.click
+   end
+
+   Then /^Choose size, flavor and quantity and add to cart$/ do
+     selectoptions = $driver.find_elements(:xpath, "//div[@class = 'kor-select-text-viewport-contents']")
+     sleep 5
+     if selectoptions.count > 0
+       for i in selectoptions do
+       i.click
+       sleep 5
+       options = $driver.find_elements(:xpath, "//ul[contains(@class, 'kor-select-list')]//li")
+       options[1].click
+       sleep 5
+       end
+     end
+     cartButton = $driver.find_element(:xpath, "//button[@type = 'submit' and text() = 'Add to Cart']").click
+
+   end
+
+   Then /^Verify that 1 item in cart$/ do
+
+     qty = $driver.find_elements(:xpath, "//input[@class = 'ws-text ws-product-quantity-input ws-updateable' and contains(@data-originalvalue) ]")
+     sleep 5
+     for i in qty do
+       puts qty.attribute('data-originalvalue').to_s
+     end
 
 
+     # if x == 1
+     #
+     # puts x.text + "item in cart"
+     # else raise "BUG!!!No items in cart"
+     # end
+   end
 
 # Then /^Login to gmail$/ do
 #   login = 't.d.markit@gmail.com'
