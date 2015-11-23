@@ -547,20 +547,15 @@ Then /^Rates$/ do
    end
 
    Then /^Verify that 1 item in cart$/ do
-
-     qty = $driver.find_elements(:xpath, "//input[@class = 'ws-text ws-product-quantity-input ws-updateable' and contains(@data-originalvalue) ]")
-     sleep 5
-     for i in qty do
-       puts qty.attribute('data-originalvalue').to_s
+     qty = $driver.find_element(:xpath, "//td[@class = 'ws-cart-qty ws-cart-line-item']//input")
+     x = qty.attribute("value")
+     sleep 3
+     if x.to_i == 1
+     puts x + "item in cart"
+     else raise "BUG!!! Qty of item is not 1"
      end
-
-
-     # if x == 1
-     #
-     # puts x.text + "item in cart"
-     # else raise "BUG!!!No items in cart"
-     # end
    end
+   
 
 # Then /^Login to gmail$/ do
 #   login = 't.d.markit@gmail.com'
