@@ -1,4 +1,5 @@
-Feature: Test plan sample
+Feature:
+
 #1
   Scenario: Main page functionality - header navigation
 
@@ -90,64 +91,55 @@ Feature: Test plan sample
   Scenario: Rated
     Then In "Dog" menu go to "Food"
     Then Rates
+
 # 20
-#  Scenario: Dog - Food - sorting - best sellers
-#    Then In "Dog" menu go to "Food"
-#    Then Set sorting to "best sellers"
-#    Then Verify correct sorting
-# 21
-#  Scenario: Dog - Food - sorting - new arrivals
-#    Then In "Dog" menu go to "Food"
-#    Then Set sorting to "new arrivals"
-#    Then Verify correct sorting
-# 22
 #  Scenario: Dog - Food - filter - Brand
 #    Then In "Dog" menu go to "Food"
 #    Then Set filter for "Brand"
 #    Then Verify correct sorting
-# 23
+# 21
 #  Scenario: Dog - Food - filter - Flavor
 #    Then In "Dog" menu go to "Food"
 #    Then Set filter for "Flavor"
 #    Then Verify correct sorting
-#24
+#22
 #  Scenario: Dog - Food - filter - Breed
 #    Then In "Dog" menu go to "Food"
 #    Then Set filter for "Breed"
 #    Then Verify correct sorting
-#25
+#23
 #  Scenario: Dog - Food - filter - Price
 #    Then In "Dog" menu go to "Food"
 #    Then Set filter for "Price"
 #    Then Verify correct sorting
-#26
+#24
 #  Scenario: Dog - Food - filter - Rating
 #    Then In "Dog" menu go to "Food"
 #    Then Set filter for "Rating"
 #    Then Verify correct sorting
-#27
+#25
 #  Scenario: Dog - Food - filter - Ways To Shop
 #    Then In "Dog" menu go to "Food"
 #    Then Set filter for "Ways to Shop"
 #    Then Verify correct sorting
-#28
+#26
 #  Scenario: Dog - Food - filter - Health Consideration
 #    Then In "Dog" menu go to "Food"
 #    Then Set filter for "Health Consideration"
 #    Then Verify correct sorting
-#29
+#27
   Scenario: Dog - Food - comparing - adding 2 items
     Then In "Dog" menu go to "Food"
     Then Add 2 random items into compare mode
-#30
+#28
   Scenario: Dog - Food - comparing - adding 3 items
     Then In "Dog" menu go to "Food"
     Then Add 3 random items into compare mode
-#31
+#29
   Scenario: Dog - Food - comparing - adding more then 3 items
     Then In "Dog" menu go to "Food"
     Then Add 4 random items into compare mode
-#32
+#30
   Scenario: Dog - Food - comparing - removing 1-3 items
     Then In "Dog" menu go to "Food"
     Then Add 3 random items into compare mode
@@ -155,53 +147,55 @@ Feature: Test plan sample
     Then Tap Remove button to remove 2nd item ,  verify that item was removed
     Then Uncheck box  to remove 3d item  and verify that item was removed
 
-#33
+#31
   Scenario: Dog - Shopping - 1 item to cart - all fine
     Then In "Dog" menu go to "Food"
     Then Add random item to card
     Then Choose size, flavor and quantity and add to cart
     Then Verify that 1 item in cart
 
-##34
-##  Scenario: Dog - Shopping - 1 item to cart - size, quantity and flavor not selected
+#32
+  Scenario: Dog - Shopping - 1 item to cart - size, quantity and flavor not selected
+    Then In "Dog" menu go to "Food"
+    Then Verify that error message notifies user to select options
+#33
+  Scenario: Dog - Shopping - 1 item to cart with removing
+    Then In "Dog" menu go to "Food"
+    Then Add random item to card
+    Then Choose size, flavor and quantity and add to cart
+    Then Remove item from cart and verify that no items in cart
+#34
+  Scenario: Dog - Shopping - 1 item to cart with proceeding
+    Then In "Dog" menu go to "Food"
+    Then Add random item to card
+    Then Choose size, flavor and quantity and add to cart
+    Then Tap Checkout button and verify thet user on Checkout page
+
+
+
+
+
+
+
+
+
+
+    Test cases that not valid :
+#  We can't verify this without unknown data
+# 1 Scenario: Dog - Food - sorting - best sellers
 #    Then In "Dog" menu go to "Food"
-#    Then Add random item to card
-#    Then Add to cart if size, quantity and flavor not selected
-#    Then Verify that error messages notify user to select options
-##35
-##  Scenario: Dog - Shopping - 1 item to cart with removing
+#    Then Set sorting to "best sellers"
+#    Then Verify correct sorting
+# 2  Scenario: Dog - Food - sorting - new arrivals
 #    Then In "Dog" menu go to "Food"
-#    Then Add random item to card
-#    Then Choose size, flavor and quantity and add to cart
-#    Then Remove item from cart and verify that no items in cart
-##36
-##  Scenario: Dog - Shopping - 1 item to cart with proceeding
-#    Then In "Dog" menu go to "Food"
-#    Then Add random item to card
-#    Then Choose size, flavor and quantity and add to cart
-#    Then Tap Checkout button and verify thet user on Checkout page
-##37
-##  Scenario: Dog - Shopping - more then 1 item to cart with removing of 1 item
-##   Then In "Dog" menu go to "Food"
+#    Then Set sorting to "new arrivals"
+#    Then Verify correct sorting
+
+#  No "Add to cart" button near name of items. User have to change quantity of items or fully back to shopping page.
+      Also total quantity of items doesn't display for random items, just total price items in cart is displayed.
+# 3 Scenario: Dog - Shopping - more then 1 item to cart with removing of 1 item
+#   Then In "Dog" menu go to "Food"
 #    Then Add random  5 items to card
 #    Then Choose size, flavor and quantity and add to cart
 #    Then Remove  1 item from cart and verify that 4 items in cart
-##
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-
-
-
-
-
-
 
